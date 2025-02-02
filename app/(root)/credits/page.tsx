@@ -1,16 +1,19 @@
-import { SignedIn } from "@clerk/nextjs"; // Client-side components remain unchanged
-import { getAuth } from "@clerk/nextjs/server"; // Updated import for server-side auth
+import Header from "@/components/shared/Header";
+import TransformationForm from "@/components/shared/TransformationForm";
+import { getAuth } from "@clerk/nextjs/server"; // Server-side helper
+import { headers } from "next/headers"; // Import headers() to pass to getAuth
 import Image from "next/image";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
-import Header from "@/components/shared/Header";
 import { Button } from "@/components/ui/button";
 import { plans } from "@/constants";
 import { getUserById } from "@/lib/actions/user.actions";
 import Checkout from "@/components/shared/Checkout";
 
 const Credits = async () => {
-  const { userId } = getAuth(); // Updated usage: getAuth() replaces auth()
+  // Pass the current request headers to getAuth.
+  const { userId } = getAuth(headers());
 
   if (!userId) redirect("/sign-in");
 
@@ -61,6 +64,7 @@ const Credits = async () => {
                   Free Consumable
                 </Button>
               ) : (
+                // <SignedIn> remains unchanged in client-side code
                 <SignedIn>
                   <Checkout
                     plan={plan.name}
