@@ -1,4 +1,5 @@
-import { SignedIn, auth } from "@clerk/nextjs";
+import { SignedIn } from "@clerk/nextjs"; // Client-side components remain unchanged
+import { getAuth } from "@clerk/nextjs/server"; // Updated import for server-side auth
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
@@ -9,7 +10,7 @@ import { getUserById } from "@/lib/actions/user.actions";
 import Checkout from "@/components/shared/Checkout";
 
 const Credits = async () => {
-  const { userId } = auth();
+  const { userId } = getAuth(); // Updated usage: getAuth() replaces auth()
 
   if (!userId) redirect("/sign-in");
 

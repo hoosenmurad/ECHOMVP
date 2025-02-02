@@ -1,4 +1,4 @@
-import { auth } from "@clerk/nextjs";
+import { getAuth } from "@clerk/nextjs/server"; // Updated import
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
@@ -9,7 +9,7 @@ import { getUserById } from "@/lib/actions/user.actions";
 
 const Profile = async ({ searchParams }: SearchParamProps) => {
   const page = Number(searchParams?.page) || 1;
-  const { userId } = auth();
+  const { userId } = getAuth(); // Updated usage: using getAuth() instead of auth()
 
   if (!userId) redirect("/sign-in");
 
