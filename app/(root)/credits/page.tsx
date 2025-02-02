@@ -10,6 +10,7 @@ import { Button } from "@/components/ui/button";
 import { plans } from "@/constants";
 import { getUserById } from "@/lib/actions/user.actions";
 import Checkout from "@/components/shared/Checkout";
+import { SignedIn } from "@clerk/nextjs";
 
 const Credits = async () => {
   // Pass the current request headers to getAuth.
