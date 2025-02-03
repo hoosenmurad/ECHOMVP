@@ -1,20 +1,15 @@
-import Header from "@/components/shared/Header";
-// Removed unused TransformationForm import if not needed
-import { getAuth } from "@clerk/nextjs/server"; // Server-side helper
-import { headers } from "next/headers"; // Provide request headers to getAuth
+import { SignedIn, auth } from "@clerk/nextjs";
 import Image from "next/image";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
+import Header from "@/components/shared/Header";
 import { Button } from "@/components/ui/button";
 import { plans } from "@/constants";
 import { getUserById } from "@/lib/actions/user.actions";
 import Checkout from "@/components/shared/Checkout";
-import { SignedIn } from "@clerk/nextjs"; // Client-side component
 
 const Credits = async () => {
-  // Pass current request headers to getAuth so it returns userId correctly.
-  const { userId } = getAuth(headers());
+  const { userId } = auth();
 
   if (!userId) redirect("/sign-in");
 
@@ -32,7 +27,7 @@ const Credits = async () => {
           {plans.map((plan) => (
             <li key={plan.name} className="credits-item">
               <div className="flex-center flex-col gap-3">
-                <Image src={plan.icon} alt="icon" width={50} height={50} />
+                <Image src={plan.icon} alt="check" width={50} height={50} />
                 <p className="p-20-semibold mt-2 text-purple-500">
                   {plan.name}
                 </p>
@@ -65,7 +60,6 @@ const Credits = async () => {
                   Free Consumable
                 </Button>
               ) : (
-                // SignedIn is a client component that ensures the enclosed UI only renders if the user is signed in.
                 <SignedIn>
                   <Checkout
                     plan={plan.name}
