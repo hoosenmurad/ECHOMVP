@@ -1,4 +1,6 @@
-import { SignedIn, getAuth } from "@clerk/nextjs/server";
+import { getAuth } from "@clerk/nextjs/server"; // Server-side auth helper
+import { SignedIn } from "@clerk/nextjs"; // Client-side component for signed-in UI
+import { headers } from "next/headers"; // To extract request headers
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
@@ -9,7 +11,9 @@ import { getUserById } from "@/lib/actions/user.actions";
 import Checkout from "@/components/shared/Checkout";
 
 const Credits = async () => {
-  const { userId } = getAuth();
+  // Create a dummy Request object using the current request headers.
+  const req = new Request("http://dummy", { headers: headers() });
+  const { userId } = getAuth(req);
 
   if (!userId) redirect("/sign-in");
 
@@ -27,7 +31,7 @@ const Credits = async () => {
           {plans.map((plan) => (
             <li key={plan.name} className="credits-item">
               <div className="flex-center flex-col gap-3">
-                <Image src={plan.icon} alt="check" width={50} height={50} />
+                <Image src={plan.icon} alt="icon" width={50} height={50} />
                 <p className="p-20-semibold mt-2 text-purple-500">
                   {plan.name}
                 </p>
