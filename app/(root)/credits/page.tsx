@@ -1,19 +1,21 @@
-import { getAuth } from "@clerk/nextjs/server"; // Server-side auth helper
-import { SignedIn } from "@clerk/nextjs"; // Client-side component for signed-in UI
+import Header from "@/components/shared/Header";
+import { getAuth } from "@clerk/nextjs/server"; // Server-side helper
 import { headers } from "next/headers"; // To extract request headers
 import Image from "next/image";
+import Link from "next/link";
 import { redirect } from "next/navigation";
 
-import Header from "@/components/shared/Header";
 import { Button } from "@/components/ui/button";
 import { plans } from "@/constants";
 import { getUserById } from "@/lib/actions/user.actions";
 import Checkout from "@/components/shared/Checkout";
+import { SignedIn } from "@clerk/nextjs"; // Client-side component
 
 const Credits = async () => {
   // Create a dummy Request object using the current request headers.
   const req = new Request("http://dummy", { headers: headers() });
-  const { userId } = getAuth(req);
+  // Cast req to 'any' (or RequestLike) so that it meets getAuth's expected type.
+  const { userId } = getAuth(req as unknown as Request);
 
   if (!userId) redirect("/sign-in");
 
