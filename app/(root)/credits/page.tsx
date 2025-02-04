@@ -1,20 +1,15 @@
-import Header from "@/components/shared/Header";
-import { getAuth } from "@clerk/nextjs/server";
-import { headers, NextRequest } from "next/server";
+import { SignedIn, auth } from "@clerk/nextjs";
 import Image from "next/image";
-import Link from "next/link";
 import { redirect } from "next/navigation";
 
+import Header from "@/components/shared/Header";
 import { Button } from "@/components/ui/button";
 import { plans } from "@/constants";
 import { getUserById } from "@/lib/actions/user.actions";
 import Checkout from "@/components/shared/Checkout";
-import { SignedIn } from "@clerk/nextjs";
 
 const Credits = async () => {
-  // Create a NextRequest using the current request headers.
-  const req = new NextRequest("http://dummy", { headers: headers() });
-  const { userId } = getAuth(req);
+  const { userId } = auth();
 
   if (!userId) redirect("/sign-in");
 
@@ -32,7 +27,7 @@ const Credits = async () => {
           {plans.map((plan) => (
             <li key={plan.name} className="credits-item">
               <div className="flex-center flex-col gap-3">
-                <Image src={plan.icon} alt="icon" width={50} height={50} />
+                <Image src={plan.icon} alt="check" width={50} height={50} />
                 <p className="p-20-semibold mt-2 text-purple-500">
                   {plan.name}
                 </p>
