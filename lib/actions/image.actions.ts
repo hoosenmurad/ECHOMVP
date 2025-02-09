@@ -113,7 +113,7 @@ export async function getAllImages({
       secure: true,
     });
 
-    let expression = "folder=imaginify";
+    let expression = "folder=mh_tune_ai";
 
     if (searchQuery) {
       expression += ` AND ${searchQuery}`;
