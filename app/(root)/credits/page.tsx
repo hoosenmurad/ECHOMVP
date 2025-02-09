@@ -1,6 +1,4 @@
-import { SignedIn } from "@clerk/nextjs"; // ✅ Correct Import
-import { getAuth } from "@clerk/nextjs/server";
-import { headers } from "next/headers"; // ✅ Correct way to access headers
+import { SignedIn, auth } from "@clerk/nextjs";
 import Image from "next/image";
 import { redirect } from "next/navigation";
 
@@ -9,14 +7,9 @@ import { Button } from "@/components/ui/button";
 import { plans } from "@/constants";
 import { getUserById } from "@/lib/actions/user.actions";
 import Checkout from "@/components/shared/Checkout";
-import { RequestCookies } from "next/dist/compiled/@edge-runtime/cookies";
 
 const Credits = async () => {
-  // ✅ Fix: Use headers() directly in getAuth()
-  const { userId } = getAuth({
-    headers: headers(),
-    cookies: new RequestCookies(),
-  });
+  const { userId } = auth();
 
   if (!userId) redirect("/sign-in");
 
@@ -68,8 +61,6 @@ const Credits = async () => {
                 </Button>
               ) : (
                 <SignedIn>
-                  {" "}
-                  {/* ✅ SignedIn now correctly wrapped around Checkout */}
                   <Checkout
                     plan={plan.name}
                     amount={plan.price}
