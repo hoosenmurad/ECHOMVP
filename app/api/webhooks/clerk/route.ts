@@ -66,16 +66,17 @@ export async function POST(req: Request) {
       clerkId: id,
       email: email_addresses[0].email_address,
       username: username!,
-      firstName: first_name,
-      lastName: last_name,
+      firstName: first_name || "", // Provide fallback if null
+      lastName: last_name || "", // Provide fallback if null
       photo: image_url,
     };
 
     const newUser = await createUser(user);
 
-    // Set public metadata
+    // Set public metadata using the awaited client
     if (newUser) {
-      await clerkClient.users.updateUserMetadata(id, {
+      const client = await clerkClient(); // Await the clerkClient function
+      await client.users.updateUserMetadata(id, {
         publicMetadata: {
           userId: newUser._id,
         },
